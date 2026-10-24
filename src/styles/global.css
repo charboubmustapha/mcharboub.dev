@@ -805,6 +805,7 @@ button {
     letter-spacing: 0;
     color: var(--text);
     white-space: pre;
+    -webkit-user-select: none;
     user-select: none;
 }
 

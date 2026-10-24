@@ -102,7 +102,7 @@ export function initShell(root) {
 
     function shake() {
         form.classList.remove('shake');
-        void form.offsetWidth;
+        form.getBoundingClientRect();
         form.classList.add('shake');
         setTimeout(() => form.classList.remove('shake'), 450);
     }
@@ -245,7 +245,7 @@ export function initShell(root) {
         return [art];
     }
 
-    function loadPosts() {
+    async function loadPosts() {
         if (!state.postsPromise) {
             state.postsPromise = fetch(BASE + 'posts/index.json', {cache: 'no-cache'})
                 .then((res) => {
@@ -349,11 +349,13 @@ export function initShell(root) {
         if (!reduceMotion()) {
             await wait(delay);
             for (let i = 1; i <= cmd.length; i++) {
-                if (state.skipping) i = cmd.length;
+                if (state.skipping) break;
                 input.value = cmd.slice(0, i);
                 mirror.textContent = input.value;
                 await wait(34 + Math.random() * 36);
             }
+            input.value = cmd;
+            mirror.textContent = cmd;
             await wait(160);
         }
         input.value = '';
@@ -413,7 +415,7 @@ export function initShell(root) {
         state.skipping = false;
         try {
             sessionStorage.setItem(BOOTED_KEY, '1');
-        } catch (e) {
+        } catch {
         }
         if (isNarrow()) {
             const first = entries.firstElementChild;
@@ -529,7 +531,7 @@ export function initShell(root) {
     let booted = false;
     try {
         booted = sessionStorage.getItem(BOOTED_KEY) === '1';
-    } catch (e) {
+    } catch {
     }
     if (reduceMotion()) {
         instantBoot(false);

@@ -7,7 +7,7 @@ export function currentTheme() {
 
 export function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
-  try { localStorage.setItem(KEY, t); } catch (e) { }
+  try { localStorage.setItem(KEY, t); } catch { }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', BAR[t]);
   document.querySelectorAll('.theme button[data-theme-pick]').forEach((b) => {

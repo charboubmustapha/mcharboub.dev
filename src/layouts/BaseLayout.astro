@@ -49,7 +49,7 @@ const ogImage = new URL('/og-card.jpg', Astro.site);
             let t = null;
             try {
                 t = localStorage.getItem('mdev-theme');
-            } catch (e) {
+            } catch {
             }
             if (t !== 'dark' && t !== 'light') {
                 t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
