@@ -1,0 +1,11 @@
+---
+import ThemeSwitch from './ThemeSwitch.astro';
+interface Props { sub: string }
+const { sub } = Astro.props;
+---
+<header class="hdr">
+  <a class="brand" href="/">mcharboub<span class="tld">.dev</span></a>
+  <span class="hdr-sub">— {sub}</span>
+  <span class="spacer"></span>
+  <ThemeSwitch />
+</header>

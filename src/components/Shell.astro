@@ -1,0 +1,128 @@
+---
+import { getImage } from 'astro:assets';
+import PageHeader from './PageHeader.astro';
+import me from '../assets/me.png';
+
+const year = new Date().getFullYear();
+const portrait = await getImage({ src: me, width: 768, format: 'webp' });
+const photo = await getImage({ src: me, width: 1024, format: 'webp' });
+const dims = `${me.width}×${me.height}`;
+---
+<div class="shell" id="shell" data-portrait={portrait.src}>
+  <PageHeader sub="bash" />
+
+  <div class="scroll" id="scroll">
+    <div class="screen" id="screen">
+      <noscript>
+        <div class="entry">
+          <p class="cmdline"><span class="sym">$</span> cat about.md</p>
+          <div class="block">
+            <p class="kicker">lead software engineer</p>
+            <h1 class="greeting">Hi,<br />I'm Mustapha.</h1>
+            <p class="lede">I've written Java for a living since 2015.</p>
+            <p class="lede">Here I write about what I've learned and what I'm passionate about. Posts: <a href="/posts/">/posts/</a>.</p>
+          </div>
+        </div>
+        <div class="entry">
+          <p class="cmdline"><span class="sym">$</span> open contact</p>
+          <div class="block">
+            <a class="mail" href="mailto:charboubmustapha@pm.me">charboubmustapha@pm.me</a>
+            <div class="links">
+              <a href="https://github.com/charboubmustapha" target="_blank" rel="noopener">github ↗</a>
+              <a href="https://www.linkedin.com/in/mustapha-charboub-878751246" target="_blank" rel="noopener">linkedin ↗</a>
+            </div>
+          </div>
+        </div>
+        <p class="faint">This shell needs JavaScript. The posts are readable without it at <a href="/posts/">/posts/</a>.</p>
+      </noscript>
+      <div class="boot" id="boot" aria-hidden="true"></div>
+      <div id="entries" aria-live="polite" aria-relevant="additions"></div>
+
+      <form class="promptrow" id="promptrow" autocomplete="off">
+        <span class="sym" aria-hidden="true">$</span>
+        <div class="field">
+          <span class="ghost" aria-hidden="true"><span class="mirror" id="mirror"></span><span id="ghost"></span><span class="caret" aria-hidden="true"></span></span>
+          <input class="cmd-input" id="cmd" type="text" name="cmd" aria-label="Command" aria-describedby="ghost-hint" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" enterkeyhint="go" />
+        </div>
+      </form>
+      <p class="ghost-hint" id="ghost-hint" hidden></p>
+    </div>
+  </div>
+
+  <footer class="ftr">
+    <button type="button" class="cmdbtn" data-run="cat about.md">about<span class="real" aria-hidden="true">cat about.md</span></button>
+    <button type="button" class="cmdbtn" data-run="ls posts/">posts<span class="real" aria-hidden="true">ls posts/</span></button>
+    <button type="button" class="cmdbtn" data-run="open contact">contact<span class="real" aria-hidden="true">open contact</span></button>
+    <button type="button" class="cmdbtn" data-run="help">help<span class="real" aria-hidden="true">help</span></button>
+    <span class="hover-hint" id="hover-hint" aria-hidden="true">→ <span id="hover-cmd"></span></span>
+    <span class="spacer"></span>
+    <span class="copy">© {year} Mustapha Charboub</span>
+  </footer>
+
+  <template id="tpl-about">
+    <div class="block about">
+      <figure class="portrait appear-slow" style="--d:.2s" role="img" aria-label="ASCII portrait of Mustapha">
+        <pre class="ascii small" data-ascii="small" aria-hidden="true"></pre>
+        <figcaption>me.png · rendered as text</figcaption>
+      </figure>
+      <div class="about-text">
+        <p class="kicker appear">lead software engineer</p>
+        <h1 class="greeting appear" style="--d:.14s"><span class="greet"><span class="greet-word">Hi,</span><span class="greet-caret"></span></span><br />I'm Mustapha.</h1>
+        <p class="lede appear" style="--d:.3s">I've written Java for a living since 2015.</p>
+        <p class="lede appear" style="--d:.44s">Here I write about what I've learned and what I'm passionate about.</p>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-img">
+    <figure class="portrait-large appear-slow" role="img" aria-label="ASCII portrait of Mustapha">
+      <pre class="ascii large" data-ascii="large" aria-hidden="true"></pre>
+      <figcaption>me.png — {dims} · 110 cols · try "open me.png" for the original</figcaption>
+    </figure>
+  </template>
+
+  <template id="tpl-photo">
+    <figure class="photo appear-slow">
+      <img src={photo.src} alt="Mustapha" width={photo.attributes.width} height={photo.attributes.height} />
+      <figcaption>me.png — {photo.attributes.width}×{photo.attributes.height}</figcaption>
+    </figure>
+  </template>
+
+  <template id="tpl-posts-empty">
+    <div class="appear">
+      <p class="out">total 0</p>
+      <p class="faint">nothing published yet — the first post is being written<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+    </div>
+  </template>
+
+  <template id="tpl-contact">
+    <div class="block">
+      <a class="mail appear" href="mailto:charboubmustapha@pm.me">charboubmustapha@pm.me</a>
+      <div class="links">
+        <a class="appear" style="--d:.18s" href="https://github.com/charboubmustapha" target="_blank" rel="noopener">github ↗</a>
+        <a class="appear" style="--d:.3s" href="https://www.linkedin.com/in/mustapha-charboub-878751246" target="_blank" rel="noopener">linkedin ↗</a>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-help">
+    <div class="help">
+      <button type="button" class="name appear-fast" data-run="cat about.md">about</button><span class="desc appear-fast">who I am</span>
+      <button type="button" class="name appear-fast" style="--d:.08s" data-run="ls posts/">posts</button><span class="desc appear-fast" style="--d:.08s">what I've written</span>
+      <button type="button" class="name appear-fast" style="--d:.16s" data-run="open contact">contact</button><span class="desc appear-fast" style="--d:.16s">how to reach me</span>
+      <button type="button" class="name appear-fast" style="--d:.24s" data-run="me">me</button><span class="desc appear-fast" style="--d:.24s">the portrait, as text</span>
+      <button type="button" class="name appear-fast" style="--d:.32s" data-run="clear">clear</button><span class="desc appear-fast" style="--d:.32s">clear the screen</span>
+      <span class="name appear-fast" style="--d:.4s">theme dark|light</span><span class="desc appear-fast" style="--d:.4s">switch the theme</span>
+    </div>
+    <p class="tips appear-fast" style="--d:.5s">tab completes · ↑ ↓ browse history · ls shows the files</p>
+  </template>
+
+  <template id="tpl-ls">
+    <p class="ls appear">about.md  contact.txt  lessons.log  me.png  <span class="dir">posts/</span></p>
+  </template>
+</div>
+
+<script>
+  import { initShell } from '../scripts/shell.js';
+  initShell(document.getElementById('shell')!);
+</script>

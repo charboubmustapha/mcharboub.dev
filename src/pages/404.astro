@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PageFooter from '../components/PageFooter.astro';
+---
+<BaseLayout title="not found — mcharboub.dev" description="This path does not exist on mcharboub.dev." path="/404/">
+  <div class="page">
+    <PageHeader sub="bash" />
+    <main class="page-main">
+      <div class="inner">
+        <p class="crumb"><span class="sym">$</span> cd <span id="path">…</span></p>
+        <p class="out">bash: cd: <span id="path2">that path</span>: no such file or directory</p>
+        <p class="faint">try <a href="/">cd ~</a> or <a href="/posts/">ls posts/</a></p>
+      </div>
+    </main>
+    <PageFooter />
+  </div>
+  <script>
+    const p = location.pathname;
+    for (const id of ['path', 'path2']) {
+      const n = document.getElementById(id);
+      if (n) n.textContent = p;
+    }
+  </script>
+</BaseLayout>
