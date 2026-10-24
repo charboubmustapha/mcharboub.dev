@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+npm-debug.log*
+.DS_Store
+.env
+.env.*
+
+# local tool state, not part of the site
+.playwright-mcp/
+.remember/
+
+# IDE
+.idea/
+.codegraph/
+design/
