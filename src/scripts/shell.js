@@ -207,7 +207,7 @@ export function initShell(root) {
         paintAscii(entry);
         input.placeholder = placeholder();
         if (state.booting) {
-            if (stick) pin();
+            if (stick && !isNarrow()) pin();
         } else {
             reveal(entry);
         }

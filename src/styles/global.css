@@ -857,6 +857,16 @@ button {
     .promptrow {
         font-size: 16px;
     }
+
+    .theme {
+        position: relative;
+    }
+
+    .theme::after {
+        content: "";
+        position: absolute;
+        inset: -7px -5px;
+    }
 }
 
 @media (hover: none) {
@@ -866,6 +876,33 @@ button {
 
     .hover-hint {
         display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .ftr {
+        gap: 6px;
+        padding: 10px 16px 12px;
+    }
+
+    .ftr .cmdbtn {
+        flex: 1 1 0;
+        padding: 9px 6px;
+        text-align: center;
+    }
+
+    .ftr .cmdbtn .real {
+        display: none;
+    }
+
+    .spacer {
+        display: none;
+    }
+
+    .copy {
+        flex-basis: 100%;
+        text-align: center;
+        font-size: 11px;
     }
 }
 
