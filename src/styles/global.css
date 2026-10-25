@@ -187,7 +187,7 @@ button {
     display: none;
 }
 
-:root:not([data-theme="light"]) .theme .ico-sun,
+:root[data-theme="dark"] .theme .ico-sun,
 :root[data-theme="light"] .theme .ico-moon {
     display: block;
 }
@@ -293,7 +293,8 @@ button {
     margin-bottom: 0;
 }
 
-.out {
+.out,
+.post-row {
     margin: 0;
     color: var(--muted);
 }
@@ -345,12 +346,14 @@ button {
     font-size: 13px;
 }
 
-.links a {
+.links a,
+.postnav a {
     color: var(--muted);
     text-decoration: none;
 }
 
-.links a:hover {
+.links a:hover,
+.postnav a:hover {
     color: var(--accent);
 }
 
@@ -397,15 +400,11 @@ button {
     color: var(--accent);
 }
 
-.post-list {
+.post-list,
+.index-list {
     margin: 0;
     padding: 0;
     list-style: none;
-}
-
-.post-row {
-    margin: 0;
-    color: var(--muted);
 }
 
 .post-row button {
@@ -558,7 +557,8 @@ button {
     margin: 0 0 6px;
 }
 
-.article .meta {
+.article .meta,
+.crumb {
     margin: 0 0 22px;
     color: var(--faint);
     font-size: 12.5px;
@@ -686,8 +686,8 @@ button {
     text-decoration: var(--shiki-light-text-decoration) !important;
 }
 
-:root:not([data-theme="light"]) .astro-code,
-:root:not([data-theme="light"]) .astro-code span {
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
     color: var(--shiki-dark) !important;
     font-style: var(--shiki-dark-font-style) !important;
     font-weight: var(--shiki-dark-font-weight) !important;
@@ -709,12 +709,6 @@ button {
     max-width: 760px;
 }
 
-.crumb {
-    margin: 0 0 22px;
-    color: var(--faint);
-    font-size: 12.5px;
-}
-
 .crumb a {
     color: var(--faint);
     text-decoration: none;
@@ -722,12 +716,6 @@ button {
 
 .crumb a:hover {
     color: var(--accent);
-}
-
-.index-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
 }
 
 .index-list li {
@@ -931,15 +919,6 @@ button {
     padding-top: 16px;
     border-top: 1px solid var(--line);
     font-size: 13px;
-}
-
-.postnav a {
-    color: var(--muted);
-    text-decoration: none;
-}
-
-.postnav a:hover {
-    color: var(--accent);
 }
 
 .postnav .older {

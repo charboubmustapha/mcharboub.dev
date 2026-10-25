@@ -4,6 +4,7 @@ import '@fontsource/ibm-plex-mono/400-italic.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '@fontsource/ibm-plex-mono/600.css';
 import '../styles/global.css';
+import {PALETTE, THEME_KEY} from '../lib/theme';
 
 interface Props {
     title: string;
@@ -34,7 +35,7 @@ const ogImage = new URL('/og-card.jpg', Astro.site);
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
     <link rel="manifest" href="/site.webmanifest"/>
-    <meta name="theme-color" content="#0d0d0d"/>
+    <meta name="theme-color" content={PALETTE.dark.bg}/>
     <meta property="og:type" content={type}/>
     <meta property="og:title" content={title}/>
     <meta property="og:description" content={description}/>
@@ -46,11 +47,11 @@ const ogImage = new URL('/og-card.jpg', Astro.site);
     <meta property="og:image:alt" content="Cartoon portrait of Mustapha Charboub next to the prompt: cat about.md"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:image" content={ogImage}/>
-    <script is:inline>
+    <script define:vars={{THEME_KEY, PALETTE}}>
         (function () {
             let t = null;
             try {
-                t = localStorage.getItem('mdev-theme');
+                t = localStorage.getItem(THEME_KEY);
             } catch {
             }
             if (t !== 'dark' && t !== 'light') {
@@ -58,14 +59,14 @@ const ogImage = new URL('/og-card.jpg', Astro.site);
             }
             document.documentElement.setAttribute('data-theme', t);
             const m = document.querySelector('meta[name="theme-color"]');
-            if (m) m.setAttribute('content', t === 'light' ? '#f4f4f2' : '#0d0d0d');
+            if (m) m.setAttribute('content', PALETTE[t].bg);
         })();
     </script>
 </head>
 <body>
 <slot/>
 <script>
-    import {initThemeSwitch} from '../scripts/theme.js';
+    import {initThemeSwitch} from '../scripts/theme';
 
     initThemeSwitch();
 </script>

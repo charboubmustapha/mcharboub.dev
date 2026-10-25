@@ -1,4 +1,5 @@
 import {type CollectionEntry, getCollection} from 'astro:content';
+import type {GetStaticPaths} from 'astro';
 
 export type Post = CollectionEntry<'blog'>;
 
@@ -15,6 +16,11 @@ export async function getPosts(): Promise<Post[]> {
     const posts = await getCollection('blog', (p) => import.meta.env.DEV || !p.data.draft);
     return posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
+
+export const postPaths = (async () => {
+    const posts = await getPosts();
+    return posts.map((post) => ({params: {slug: post.id}, props: {post}}));
+}) satisfies GetStaticPaths;
 
 function readingTime(body: string | undefined): string {
     const words = (body ?? '').trim().split(/\s+/).filter(Boolean).length;

@@ -1,10 +1,7 @@
-import type {APIRoute, GetStaticPaths, InferGetStaticPropsType} from 'astro';
-import {getPosts, toMeta} from '../../lib/posts';
+import type {APIRoute, InferGetStaticPropsType} from 'astro';
+import {postPaths, toMeta} from '../../lib/posts';
 
-export const getStaticPaths = (async () => {
-    const posts = await getPosts();
-    return posts.map((post) => ({params: {slug: post.id}, props: {post}}));
-}) satisfies GetStaticPaths;
+export const getStaticPaths = postPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 

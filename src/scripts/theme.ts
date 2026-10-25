@@ -1,23 +1,25 @@
-const KEY = 'mdev-theme';
-const BAR = { dark: '#0d0d0d', light: '#f4f4f2' };
-const LABEL = { dark: 'Switch to light theme', light: 'Switch to dark theme' };
+import {PALETTE, THEME_KEY, TOGGLE_LABEL, type Theme} from '../lib/theme';
 
-export function currentTheme() {
+export function currentTheme(): Theme {
   return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
 }
 
-function applyTheme(t) {
+function toggles(): NodeListOf<HTMLElement> {
+  return document.querySelectorAll<HTMLElement>('[data-theme-toggle]');
+}
+
+function applyTheme(t: Theme) {
   document.documentElement.setAttribute('data-theme', t);
-  try { localStorage.setItem(KEY, t); } catch { }
+  try { localStorage.setItem(THEME_KEY, t); } catch { }
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', BAR[t]);
-  document.querySelectorAll('[data-theme-toggle]').forEach((b) => {
-    b.setAttribute('aria-label', LABEL[t]);
-    b.title = LABEL[t];
+  if (meta) meta.setAttribute('content', PALETTE[t].bg);
+  toggles().forEach((b) => {
+    b.setAttribute('aria-label', TOGGLE_LABEL[t]);
+    b.title = TOGGLE_LABEL[t];
   });
 }
 
-export function setTheme(t) {
+export function setTheme(t: string) {
   if (t !== 'dark' && t !== 'light') return;
   const go = () => applyTheme(t);
   if (document.startViewTransition && t !== currentTheme()) document.startViewTransition(go);
@@ -26,7 +28,7 @@ export function setTheme(t) {
 
 export function initThemeSwitch() {
   applyTheme(currentTheme());
-  document.querySelectorAll('[data-theme-toggle]').forEach((b) => {
+  toggles().forEach((b) => {
     b.addEventListener('click', () => setTheme(currentTheme() === 'light' ? 'dark' : 'light'));
   });
 }

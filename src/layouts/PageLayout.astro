@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PageFooter from '../components/PageFooter.astro';
+
+interface Props {
+    title: string;
+    description?: string;
+    path: string;
+    type?: 'website' | 'article';
+    sub: string;
+}
+
+const {title, description, path, type, sub} = Astro.props;
+---
+<BaseLayout title={`${title} — mcharboub.dev`} description={description} path={path} type={type}>
+    <div class="page">
+        <PageHeader sub={sub}/>
+        <main class="page-main">
+            <slot/>
+        </main>
+        <PageFooter/>
+    </div>
+</BaseLayout>

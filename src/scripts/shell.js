@@ -1,4 +1,4 @@
-import {currentTheme, setTheme} from './theme.js';
+import {currentTheme, setTheme} from './theme';
 
 const GREETINGS = ['Hi,', 'Salut,', 'Salam,', 'Moien,'];
 const BASE_COMPLETIONS = [

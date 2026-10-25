@@ -1,12 +1,41 @@
 ---
 import { getImage } from 'astro:assets';
 import PageHeader from './PageHeader.astro';
+import PageFooter from './PageFooter.astro';
 import me from '../assets/me.png';
 
-const year = new Date().getFullYear();
 const portrait = await getImage({ src: me, width: 768, format: 'webp' });
 const photo = await getImage({ src: me, width: 1024, format: 'webp' });
 const dims = `${me.width}×${me.height}`;
+
+const about = {
+  kicker: 'lead software engineer',
+  hi: 'Hi,',
+  name: "I'm Mustapha.",
+  lede: ["I've written Java for a living since 2015.", "Here I write about what I've learned and what I'm passionate about."],
+};
+const mail = 'charboubmustapha@pm.me';
+const links = [
+  { label: 'github', href: 'https://github.com/charboubmustapha', delay: '.18s' },
+  { label: 'linkedin', href: 'https://www.linkedin.com/in/mustapha-charboub-878751246', delay: '.3s' },
+];
+
+interface Command {
+  name: string;
+  run?: string;
+  desc: string;
+  footer?: boolean;
+}
+const commands: Command[] = [
+  { name: 'about', run: 'cat about.md', desc: 'who I am', footer: true },
+  { name: 'posts', run: 'ls posts/', desc: "what I've written", footer: true },
+  { name: 'contact', run: 'open contact', desc: 'how to reach me', footer: true },
+  { name: 'me', run: 'me', desc: 'the portrait, as text' },
+  { name: 'clear', run: 'clear', desc: 'clear the screen' },
+  { name: 'theme dark|light', desc: 'switch the theme' },
+];
+const footerButtons = [...commands.filter((c) => c.footer), { name: 'help', run: 'help' }];
+const delay = (i: number) => (i ? `--d:${String(+(i * 0.08).toFixed(2)).replace(/^0/, '')}s` : undefined);
 ---
 <div class="shell" id="shell" data-portrait={portrait.src}>
   <PageHeader sub="bash" />
@@ -17,19 +46,18 @@ const dims = `${me.width}×${me.height}`;
         <div class="entry">
           <p class="cmdline"><span class="sym">$</span> cat about.md</p>
           <div class="block">
-            <p class="kicker">lead software engineer</p>
-            <h1 class="greeting">Hi,<br />I'm Mustapha.</h1>
-            <p class="lede">I've written Java for a living since 2015.</p>
-            <p class="lede">Here I write about what I've learned and what I'm passionate about. Posts: <a href="/posts/">/posts/</a>.</p>
+            <p class="kicker">{about.kicker}</p>
+            <h1 class="greeting">{about.hi}<br />{about.name}</h1>
+            <p class="lede">{about.lede[0]}</p>
+            <p class="lede">{about.lede[1]} Posts: <a href="/posts/">/posts/</a>.</p>
           </div>
         </div>
         <div class="entry">
           <p class="cmdline"><span class="sym">$</span> open contact</p>
           <div class="block">
-            <a class="mail" href="mailto:charboubmustapha@pm.me">charboubmustapha@pm.me</a>
+            <a class="mail" href={`mailto:${mail}`}>{mail}</a>
             <div class="links">
-              <a href="https://github.com/charboubmustapha" target="_blank" rel="noopener">github ↗</a>
-              <a href="https://www.linkedin.com/in/mustapha-charboub-878751246" target="_blank" rel="noopener">linkedin ↗</a>
+              {links.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}
             </div>
           </div>
         </div>
@@ -50,15 +78,12 @@ const dims = `${me.width}×${me.height}`;
     </div>
   </div>
 
-  <footer class="ftr">
-    <button type="button" class="cmdbtn" data-run="cat about.md">about<span class="real" aria-hidden="true">cat about.md</span></button>
-    <button type="button" class="cmdbtn" data-run="ls posts/">posts<span class="real" aria-hidden="true">ls posts/</span></button>
-    <button type="button" class="cmdbtn" data-run="open contact">contact<span class="real" aria-hidden="true">open contact</span></button>
-    <button type="button" class="cmdbtn" data-run="help">help<span class="real" aria-hidden="true">help</span></button>
+  <PageFooter>
+    {footerButtons.map((c) => (
+      <button type="button" class="cmdbtn" data-run={c.run}>{c.name}<span class="real" aria-hidden="true">{c.run}</span></button>
+    ))}
     <span class="hover-hint" id="hover-hint" aria-hidden="true">→ <span id="hover-cmd"></span></span>
-    <span class="spacer"></span>
-    <span class="copy">© {year} Mustapha Charboub</span>
-  </footer>
+  </PageFooter>
 
   <template id="tpl-about">
     <div class="block about">
@@ -67,10 +92,10 @@ const dims = `${me.width}×${me.height}`;
         <figcaption>me.png · rendered as text</figcaption>
       </figure>
       <div class="about-text">
-        <p class="kicker appear">lead software engineer</p>
-        <h1 class="greeting appear" style="--d:.14s"><span class="greet"><span class="greet-word">Hi,</span><span class="greet-caret"></span></span><br />I'm Mustapha.</h1>
-        <p class="lede appear" style="--d:.3s">I've written Java for a living since 2015.</p>
-        <p class="lede appear" style="--d:.44s">Here I write about what I've learned and what I'm passionate about.</p>
+        <p class="kicker appear">{about.kicker}</p>
+        <h1 class="greeting appear" style="--d:.14s"><span class="greet"><span class="greet-word">{about.hi}</span><span class="greet-caret"></span></span><br />{about.name}</h1>
+        <p class="lede appear" style="--d:.3s">{about.lede[0]}</p>
+        <p class="lede appear" style="--d:.44s">{about.lede[1]}</p>
       </div>
     </div>
   </template>
@@ -98,22 +123,23 @@ const dims = `${me.width}×${me.height}`;
 
   <template id="tpl-contact">
     <div class="block">
-      <a class="mail appear" href="mailto:charboubmustapha@pm.me">charboubmustapha@pm.me</a>
+      <a class="mail appear" href={`mailto:${mail}`}>{mail}</a>
       <div class="links">
-        <a class="appear" style="--d:.18s" href="https://github.com/charboubmustapha" target="_blank" rel="noopener">github ↗</a>
-        <a class="appear" style="--d:.3s" href="https://www.linkedin.com/in/mustapha-charboub-878751246" target="_blank" rel="noopener">linkedin ↗</a>
+        {links.map((l) => <a class="appear" style={`--d:${l.delay}`} href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}
       </div>
     </div>
   </template>
 
   <template id="tpl-help">
     <div class="help">
-      <button type="button" class="name appear-fast" data-run="cat about.md">about</button><span class="desc appear-fast">who I am</span>
-      <button type="button" class="name appear-fast" style="--d:.08s" data-run="ls posts/">posts</button><span class="desc appear-fast" style="--d:.08s">what I've written</span>
-      <button type="button" class="name appear-fast" style="--d:.16s" data-run="open contact">contact</button><span class="desc appear-fast" style="--d:.16s">how to reach me</span>
-      <button type="button" class="name appear-fast" style="--d:.24s" data-run="me">me</button><span class="desc appear-fast" style="--d:.24s">the portrait, as text</span>
-      <button type="button" class="name appear-fast" style="--d:.32s" data-run="clear">clear</button><span class="desc appear-fast" style="--d:.32s">clear the screen</span>
-      <span class="name appear-fast" style="--d:.4s">theme dark|light</span><span class="desc appear-fast" style="--d:.4s">switch the theme</span>
+      {commands.map((c, i) => (
+        <>
+          {c.run
+            ? <button type="button" class="name appear-fast" style={delay(i)} data-run={c.run}>{c.name}</button>
+            : <span class="name appear-fast" style={delay(i)}>{c.name}</span>}
+          <span class="desc appear-fast" style={delay(i)}>{c.desc}</span>
+        </>
+      ))}
     </div>
     <p class="tips appear-fast" style="--d:.5s">tab completes · ↑ ↓ browse history · ls shows the files</p>
   </template>

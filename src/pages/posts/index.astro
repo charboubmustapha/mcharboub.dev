@@ -1,34 +1,26 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import PageLayout from '../../layouts/PageLayout.astro';
 import {getPosts, toMeta} from '../../lib/posts';
 
 const posts = (await getPosts()).map(toMeta);
 ---
-<BaseLayout title="posts — mcharboub.dev" description="Posts by Mustapha Charboub." path="/posts/">
-    <div class="page">
-        <PageHeader sub="ls posts/"/>
-        <main class="page-main">
-            <div class="inner">
-                <p class="crumb"><span class="sym">$</span> ls posts/</p>
-                <p class="out">total {posts.length}</p>
-                {posts.length === 0 ? (
-                        <p class="faint">nothing published yet — the first post is being written<span
-                                class="dots"><span>.</span><span>.</span><span>.</span></span></p>
-                ) : (
-                        <ul class="index-list">
-                            {posts.map((p) => (
-                                    <li>
-                                        <a class="t" href={p.url}>{p.title}</a>
-                                        <span class="meta"> · {p.date} · {p.readingTime}</span>
-                                        {p.description && <p class="desc">{p.description}</p>}
-                                    </li>
-                            ))}
-                        </ul>
-                )}
-            </div>
-        </main>
-        <PageFooter/>
+<PageLayout title="posts" description="Posts by Mustapha Charboub." path="/posts/" sub="ls posts/">
+    <div class="inner">
+        <p class="crumb"><span class="sym">$</span> ls posts/</p>
+        <p class="out">total {posts.length}</p>
+        {posts.length === 0 ? (
+                <p class="faint">nothing published yet — the first post is being written<span
+                        class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+        ) : (
+                <ul class="index-list">
+                    {posts.map((p) => (
+                            <li>
+                                <a class="t" href={p.url}>{p.title}</a>
+                                <span class="meta"> · {p.date} · {p.readingTime}</span>
+                                {p.description && <p class="desc">{p.description}</p>}
+                            </li>
+                    ))}
+                </ul>
+        )}
     </div>
-</BaseLayout>
+</PageLayout>

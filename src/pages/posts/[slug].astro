@@ -1,15 +1,10 @@
 ---
 import {render} from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import type {GetStaticPaths, InferGetStaticPropsType} from 'astro';
-import {getPosts, toMeta} from '../../lib/posts';
+import PageLayout from '../../layouts/PageLayout.astro';
+import type {InferGetStaticPropsType} from 'astro';
+import {getPosts, postPaths, toMeta} from '../../lib/posts';
 
-export const getStaticPaths = (async () => {
-    const posts = await getPosts();
-    return posts.map((post) => ({params: {slug: post.id}, props: {post}}));
-}) satisfies GetStaticPaths;
+export const getStaticPaths = postPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const {post} = Astro.props as Props;
@@ -20,28 +15,22 @@ const idx = all.findIndex((p) => p.slug === meta.slug);
 const newer = idx > 0 ? all[idx - 1] : null;
 const older = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 ---
-<BaseLayout title={`${meta.title} — mcharboub.dev`} description={meta.description || meta.title} path={meta.url}
-            type="article">
-    <div class="page">
-        <PageHeader sub={`cat posts/${meta.slug}`}/>
-        <main class="page-main">
-            <article class="inner article">
-                <p class="crumb"><a href="/posts/">posts/</a> / {meta.slug}</p>
-                <h1 class="title">{meta.title}</h1>
-                <p class="meta">
-                    <time datetime={meta.date}>{meta.date}</time>
-                    · {meta.readingTime}</p>
-                <div class="body">
-                    <Content/>
-                </div>
-                {(newer || older) && (
-                        <nav class="postnav" aria-label="Other posts">
-                            {newer && <a class="newer" href={newer.url}>← {newer.title}</a>}
-                            {older && <a class="older" href={older.url}>{older.title} →</a>}
-                        </nav>
-                )}
-            </article>
-        </main>
-        <PageFooter/>
-    </div>
-</BaseLayout>
+<PageLayout title={meta.title} description={meta.description || meta.title} path={meta.url} type="article"
+            sub={`cat posts/${meta.slug}`}>
+    <article class="inner article">
+        <p class="crumb"><a href="/posts/">posts/</a> / {meta.slug}</p>
+        <h1 class="title">{meta.title}</h1>
+        <p class="meta">
+            <time datetime={meta.date}>{meta.date}</time>
+            · {meta.readingTime}</p>
+        <div class="body">
+            <Content/>
+        </div>
+        {(newer || older) && (
+                <nav class="postnav" aria-label="Other posts">
+                    {newer && <a class="newer" href={newer.url}>← {newer.title}</a>}
+                    {older && <a class="older" href={older.url}>{older.title} →</a>}
+                </nav>
+        )}
+    </article>
+</PageLayout>

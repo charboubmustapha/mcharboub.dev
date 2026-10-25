@@ -1,4 +1,7 @@
-<button type="button" class="theme" data-theme-toggle aria-label="Switch to light theme" title="Switch to light theme">
+---
+import {TOGGLE_LABEL} from '../lib/theme';
+---
+<button type="button" class="theme" data-theme-toggle aria-label={TOGGLE_LABEL.dark} title={TOGGLE_LABEL.dark}>
     <svg class="ico-sun" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
          stroke-linecap="round" aria-hidden="true">
         <circle cx="8" cy="8" r="3.2"></circle>
