@@ -56,6 +56,10 @@ export function initShell(root) {
         scroll.scrollTop = scroll.scrollHeight;
     }
 
+    function reveal(entry) {
+        scroll.scrollTop = Math.min(entry.offsetTop - 28, scroll.scrollHeight - scroll.clientHeight);
+    }
+
     function focus() {
         if (!state.busy && !isTouch()) input.focus({preventScroll: true});
     }
@@ -202,7 +206,11 @@ export function initShell(root) {
         entries.append(entry);
         paintAscii(entry);
         input.placeholder = placeholder();
-        if (stick) pin();
+        if (state.booting) {
+            if (stick) pin();
+        } else {
+            reveal(entry);
+        }
         return entry;
     }
 
