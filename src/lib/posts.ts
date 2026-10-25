@@ -16,12 +16,12 @@ export async function getPosts(): Promise<Post[]> {
     return posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-export function readingTime(body: string | undefined): string {
+function readingTime(body: string | undefined): string {
     const words = (body ?? '').trim().split(/\s+/).filter(Boolean).length;
     return `${Math.max(1, Math.round(words / 200))} min`;
 }
 
-export function isoDate(d: Date): string {
+function isoDate(d: Date): string {
     return d.toISOString().slice(0, 10);
 }
 

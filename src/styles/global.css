@@ -9,7 +9,6 @@
     --faint: #8a8a8a;
     --accent: #e85d4a;
     --accent2: #f28b7c;
-    --on-accent: #0d0d0d;
     color-scheme: dark;
 }
 
@@ -23,7 +22,6 @@
     --faint: #6b6b6b;
     --accent: #b3261e;
     --accent2: #8e1d17;
-    --on-accent: #ffffff;
     color-scheme: light;
 }
 
@@ -170,35 +168,28 @@ button {
 
 .theme {
     display: inline-flex;
-    border: 1px solid var(--line2);
-    font-size: 11.5px;
-    line-height: 1;
-}
-
-.theme button {
-    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--line2);
     cursor: pointer;
     background: transparent;
     color: var(--muted);
-    transition: background .2s, color .2s;
+    line-height: 1;
+    transition: color .2s, border-color .2s;
 }
 
-.theme button + button {
-    border-left: 1px solid var(--line2);
-}
-
-.theme button:hover {
+.theme:hover {
     color: var(--text);
+    border-color: var(--text);
 }
 
-:root:not([data-theme="light"]) .theme button[data-theme-pick="dark"],
-:root[data-theme="light"] .theme button[data-theme-pick="light"] {
-    background: var(--accent);
-    color: var(--on-accent);
+.theme svg {
+    display: none;
+}
+
+:root:not([data-theme="light"]) .theme .ico-sun,
+:root[data-theme="light"] .theme .ico-moon {
+    display: block;
 }
 
 .shell {
@@ -670,6 +661,15 @@ button {
 }
 
 .astro-code {
+    /* Shiki sets these inline per token; the defaults apply when a token omits one. */
+    --shiki-light: currentColor;
+    --shiki-dark: currentColor;
+    --shiki-light-font-style: normal;
+    --shiki-dark-font-style: normal;
+    --shiki-light-font-weight: normal;
+    --shiki-dark-font-weight: normal;
+    --shiki-light-text-decoration: none;
+    --shiki-dark-text-decoration: none;
     background: var(--surface) !important;
     border: 1px solid var(--line);
     padding: 14px 16px;

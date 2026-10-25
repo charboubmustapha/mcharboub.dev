@@ -114,10 +114,10 @@ export function initShell(root) {
         return e;
     }
 
-    function stagger(nodes, step = 0.08) {
+    function stagger(nodes) {
         nodes.forEach((n, i) => {
             n.classList.add('appear');
-            n.style.setProperty('--d', (i * step).toFixed(2) + 's');
+            n.style.setProperty('--d', (i * 0.08).toFixed(2) + 's');
         });
         return nodes;
     }
